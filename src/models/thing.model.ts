@@ -31,7 +31,7 @@ export class ThingModel extends EntityModel implements IEntityModel {
 
         this.thing.lineStyle(2, 0xFEEB77, 1);
         this.thing.beginFill(0x650A5A, 1);
-        this.thing.drawCircle(appConfig.width, appConfig.height, 50);
+        this.thing.drawCircle(appConfig.width / 2, appConfig.height / 2, 50);
         this.thing.endFill();
 
         const gr = new Graphics();
@@ -49,6 +49,18 @@ export class ThingModel extends EntityModel implements IEntityModel {
         if (this.keyboard.keyPressed('ArrowUp')) {
             this.application.stage.y += this.speed;
             this.thing.y -= this.speed;
+        }
+        if (this.keyboard.keyPressed('ArrowDown')) {
+            this.application.stage.y -= this.speed;
+            this.thing.y += this.speed;
+        }
+        if (this.keyboard.keyPressed('ArrowRight')) {
+            this.application.stage.x -= this.speed;
+            this.thing.x += this.speed;
+        }
+        if (this.keyboard.keyPressed('ArrowLeft')) {
+            this.application.stage.x += this.speed;
+            this.thing.x -= this.speed;
         }
     }
 }
