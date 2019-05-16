@@ -1,10 +1,15 @@
 import Application = PIXI.Application;
 import {ISetupable} from './interfaces';
-import ApplicationOptions = PIXI.ApplicationOptions;
 
 export interface IEntityModel extends ISetupable {
+    onTick(): void;
 }
 
 export abstract class EntityModel implements IEntityModel {
-    abstract setup(application: Application, appConfig: ApplicationOptions): void;
+    constructor(protected application: Application) {
+    }
+
+    abstract setup(): void;
+
+    abstract onTick(): void;
 }

@@ -1,8 +1,7 @@
-import {IAppConfig} from '../config/app.config';
 import {IEntityModel} from '../core/entity.model';
 import {ISceneBase, SceneBase} from '../core/scene.base';
 import {ISpriteModel} from '../core/sprite-model';
-import {ThingModel} from '../models/thing.model';
+import {UserBacillusModel} from '../models/user-bacillus.model';
 import Application = PIXI.Application;
 import Loader = PIXI.loaders.Loader;
 
@@ -10,27 +9,27 @@ export class GameScene extends SceneBase implements ISceneBase {
 
     private readonly spriteModels: ISpriteModel[];
     private readonly models: IEntityModel[];
+    private readonly user: UserBacillusModel;
 
-    constructor() {
-        super();
+    constructor(application: Application) {
+        super(application);
+        this.user = new UserBacillusModel(application);
 
-        this.spriteModels = [
-            // new CatSprite()
-        ];
+        this.spriteModels = [];
 
         this.models = [
-            new ThingModel()
+            this.user
         ];
     }
 
 
-    setup(application: Application, appConfig: IAppConfig) {
+    setup() {
         for (const model of this.spriteModels) {
-            model.setup(application, appConfig);
+            model.setup();
         }
 
         for (const model of this.models) {
-            model.setup(application, appConfig);
+            model.setup();
         }
     }
 

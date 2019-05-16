@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import {IAppConfig} from '../config/app.config';
 import {ISpriteModel, SpriteModel} from '../core/sprite-model';
 import Application = PIXI.Application;
 import Loader = PIXI.loaders.Loader;
@@ -15,8 +14,8 @@ export class CatSprite extends SpriteModel implements ISpriteModel {
         return this._sprite;
     }
 
-    constructor() {
-        super();
+    constructor(application: Application) {
+        super(application);
 
         this.imagePath = 'sprites/cat.png';
     }
@@ -25,17 +24,17 @@ export class CatSprite extends SpriteModel implements ISpriteModel {
 
     }
 
-    setup(application: Application, appConfig: IAppConfig) {
+    setup() {
         this._sprite = new PIXI.Sprite(PIXI.loader.resources[this.imagePath].texture);
 
         this._sprite.x = 96;
         this._sprite.y = 96;
 
-        application.stage.addChild(this._sprite);
-        application.ticker.add(this.gameLoop, this);
+        this.application.stage.addChild(this._sprite);
+        this.application.ticker.add(this.onTick, this);
     }
 
-    gameLoop() {
+    onTick() {
         this.sprite.x++;
     }
 }

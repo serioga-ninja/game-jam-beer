@@ -1,3 +1,4 @@
+import Application = PIXI.Application;
 import Loader = PIXI.loaders.Loader;
 import Resource = PIXI.loaders.Resource;
 import * as PIXI from 'pixi.js';
@@ -8,6 +9,10 @@ export interface ISceneBase extends ISetupable {
 }
 
 export abstract class SceneBase {
+
+    constructor(protected application: Application) {
+
+    }
 
     abstract load(loader: Loader): void;
 

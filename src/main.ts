@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 
 import {App} from './app/app';
-import {AppConfig, IAppConfig} from './config/app.config';
+import {AppConfig} from './config/app.config';
 import {ISceneBase} from './core/scene.base';
 import {GameScene} from './scenes/game.scene';
 
@@ -10,13 +10,11 @@ class Game {
 
     private readonly app: App;
     private readonly gameScene: ISceneBase;
-    private readonly appConfig: IAppConfig;
 
     constructor() {
-        this.appConfig = new AppConfig();
-        this.app = new App(this.appConfig);
+        this.app = new App(new AppConfig());
 
-        this.gameScene = new GameScene();
+        this.gameScene = new GameScene(this.app.application);
     }
 
 
@@ -27,7 +25,7 @@ class Game {
         this.gameScene.load(PIXI.loader);
 
         PIXI.loader.load(() => {
-            this.gameScene.setup(this.app.application, this.appConfig);
+            this.gameScene.setup();
         });
     }
 }
