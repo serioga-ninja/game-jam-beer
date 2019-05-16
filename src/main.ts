@@ -1,58 +1,37 @@
 import * as PIXI from 'pixi.js';
 
-//Create a Pixi Application
-let app = new PIXI.Application({
-        width: 256,
-        height: 256,
-        antialias: true,
-        transparent: false,
-        resolution: 1
+import {App} from './app/app';
+import {AppConfig, IAppConfig} from './config/app.config';
+import {ISceneBase} from './core/scene.base';
+import {GameScene} from './scenes/game.scene';
+
+
+class Game {
+
+    private readonly app: App;
+    private readonly gameScene: ISceneBase;
+    private readonly appConfig: IAppConfig;
+
+    constructor() {
+        this.appConfig = new AppConfig();
+        this.app = new App(this.appConfig);
+
+        this.gameScene = new GameScene();
     }
-);
 
-//Add the canvas that Pixi automatically created for you to the HTML document
-document.body.appendChild(app.view);
 
-//load an image and run the `setup` function when it's done
-PIXI.loader
-    .add([
-        'sprites/cat.png'
-    ])
-    .on('progress', loadProgressHandler)
-    .load(setup);
+    run() {
+        //  Add the canvas that Pixi automatically created for you to the HTML document
+        document.body.appendChild(this.app.application.view);
 
-function loadProgressHandler(loader, resource) {
+        this.gameScene.load(PIXI.loader);
 
-    //Display the file `url` currently being loaded
-    console.log('loading: ' + resource.url);
-
-    //Display the percentage of files currently loaded
-    console.log('progress: ' + loader.progress + '%');
-
-    //If you gave your files names as the first argument
-    //of the `add` method, you can access them like this
-    //console.log("loading: " + resource.name);
+        PIXI.loader.load(() => {
+            this.gameScene.setup(this.app.application, this.appConfig);
+        });
+    }
 }
 
-let cat;
+const game = new Game();
 
-//This `setup` function will run when the image has loaded
-function setup() {
-
-    //Create the cat sprite
-    cat = new PIXI.Sprite(PIXI.loader.resources['sprites/cat.png'].texture);
-
-    //Change the sprite's position
-    cat.x = 96;
-    cat.y = 96;
-
-    //Add the cat to the stage
-    app.stage.addChild(cat);
-    app.ticker.add(delta => gameLoop(delta));
-}
-
-function gameLoop(delta) {
-
-    //Move the cat 1 pixel
-    cat.x += 1;
-}
+game.run();
