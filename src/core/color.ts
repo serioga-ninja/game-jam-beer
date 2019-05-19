@@ -59,4 +59,14 @@ export class Color {
         }
     }
 
+    mix(rgb: number[]): void {
+        this._rgb = [
+            (this._rgb[0] + rgb[0]) / 2,
+            (this._rgb[1] + rgb[1]) / 2,
+            (this._rgb[1] + rgb[1]) / 2,
+        ];
+
+        this._hex = parseInt(Color.rgbToHex(this._rgb[0], this._rgb[1], this._rgb[2]), 16);
+    }
+
 }

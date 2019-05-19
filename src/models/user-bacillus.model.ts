@@ -1,9 +1,9 @@
 import config from '../config/app.config';
 import {IEntityModel} from '../core/entity.model';
-import {BacillusModel} from './bacillus.model';
+import {BacillusModel, IBacillusModel} from './bacillus.model';
 import Application = PIXI.Application;
 
-export class UserBacillusModel extends BacillusModel implements IEntityModel {
+export class UserBacillusModel extends BacillusModel implements IBacillusModel {
 
     //#regionPrivateProps
     //#endregionPrivateProps

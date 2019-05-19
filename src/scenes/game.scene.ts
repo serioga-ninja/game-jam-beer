@@ -12,6 +12,7 @@ import {UserBacillusModel} from '../models/user-bacillus.model';
 import Application = PIXI.Application;
 import Loader = PIXI.loaders.Loader;
 import Graphics = PIXI.Graphics;
+import Rectangle = PIXI.Rectangle;
 
 export class GameScene extends SceneBase implements ISceneBase {
 
@@ -37,7 +38,7 @@ export class GameScene extends SceneBase implements ISceneBase {
                 new NpcBacillusModel(application, {
                     startPositionY: MathHelper.random(0, config.fieldHeight),
                     startPositionX: MathHelper.random(0, config.fieldWidth),
-                    radius: MathHelper.random(BACILLUS_RADIUS - 5, BACILLUS_RADIUS + 5)
+                    radius: MathHelper.random(this.user.straight / 3, this.user.straight * 1.3)
                 })
             )
         }
@@ -52,7 +53,15 @@ export class GameScene extends SceneBase implements ISceneBase {
 
 
     setup() {
-        // setup grass
+        const border: Graphics = new Graphics();
+
+        border.lineStyle(2, 0xFEEB77, 1);
+        border.beginFill(0x650A5A, 0);
+        border.drawRect(0, 0, config.fieldWidth, config.fieldHeight);
+        border.endFill();
+
+        this.application.stage.addChild(border);
+
         for (const model of this.grassModels) {
             model.setup();
         }
@@ -86,8 +95,23 @@ export class GameScene extends SceneBase implements ISceneBase {
             });
         });
 
+        if (this.user.dead || this.user.straight > 90) {
+            this.application.stop()
+        }
+
         this.models = this.models
             .filter((model: IBacillusModel) => idsToRemove.indexOf(model.id) === -1);
+
+        // add new bacillus to the stage
+        idsToRemove.forEach(() => {
+            const newBacillus = new NpcBacillusModel(this.application, {
+                startPositionY: MathHelper.random(0, config.fieldHeight),
+                startPositionX: MathHelper.random(0, config.fieldWidth),
+                radius: MathHelper.random(this.user.straight / 2, this.user.straight * 1.5)
+            });
+            newBacillus.setup();
+            this.models.push(newBacillus);
+        });
     }
 
     load(loader: Loader): void {
