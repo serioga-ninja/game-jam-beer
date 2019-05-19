@@ -3,9 +3,16 @@ const HEX_TABLE_LEN: number = HEX_TABLE.length;
 const COLOR_LENGTH: number = 255;
 
 export class Color {
+    get hex(): number {
+        return this._hex;
+    }
 
-    private rgb: number[];
-    private hex: number;
+    get rgb(): number[] {
+        return this._rgb;
+    }
+
+    private _rgb: number[];
+    private _hex: number;
 
     public static rgbToHex(R: number, G: number, B: number): string {
         return Color.toHex(R) + Color.toHex(G) + Color.toHex(B);
@@ -44,11 +51,11 @@ export class Color {
 
     constructor(color: number | number[]) {
         if (typeof color === 'number') {
-            this.hex = color;
-            this.rgb = Color.hexToRGB(color.toString(HEX_TABLE_LEN);
+            this._hex = color;
+            this._rgb = Color.hexToRGB(color.toString(HEX_TABLE_LEN));
         } else if (color instanceof Array && color.length === 3) {
-            this.rgb = color;
-            this.hex = parseInt(Color.rgbToHex(color[0], color[1], color[2]), 16);
+            this._rgb = color;
+            this._hex = parseInt(Color.rgbToHex(color[0], color[1], color[2]), 16);
         }
     }
 

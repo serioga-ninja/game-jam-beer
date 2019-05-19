@@ -1,8 +1,8 @@
 import {IEntityModel} from '../core/entity.model';
-import {BacillusModel} from './bacillus.model';
+import {BacillusModel, IBacillusModel, IBacillusOverrideOptions} from './bacillus.model';
 import Application = PIXI.Application;
 
-export class NpcBacillusModel extends BacillusModel implements IEntityModel {
+export class NpcBacillusModel extends BacillusModel implements IBacillusModel {
 
     //#regionPrivateProps
     //#endregionPrivateProps
@@ -14,8 +14,8 @@ export class NpcBacillusModel extends BacillusModel implements IEntityModel {
     //#endregionStaticMethods
 
     //#regionConstructor
-    constructor(application: Application) {
-        super(application);
+    constructor(application: Application, options: IBacillusOverrideOptions) {
+        super(application, options);
     }
 
     //#endregionConstructor
