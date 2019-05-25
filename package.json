@@ -10,9 +10,15 @@
     "@types/node": "^12.0.2",
     "@types/pixi.js": "^4.8.7",
     "@types/uuid": "^3.4.4",
+    "live-server": "^1.2.1",
     "parcel-bundler": "^1.12.3",
     "parcel-plugin-static-files-copy": "^2.0.0",
-    "typescript": "^3.4.5"
+    "phaser": "^3.17.0",
+    "ts-lint": "^4.5.1",
+    "ts-loader": "^6.0.1",
+    "typescript": "^3.4.5",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2"
   },
   "keywords": [],
   "engine": {
