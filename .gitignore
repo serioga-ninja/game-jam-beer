@@ -61,6 +61,6 @@ typings/
 .next
 
 # webstorm configurations
-.idea
+../.idea
 /dist/
 /.cache/
