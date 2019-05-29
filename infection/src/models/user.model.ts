@@ -7,15 +7,17 @@ export class UserModel {
     protected keySpace: Phaser.Input.Keyboard.Key;
     protected player: Phaser.Physics.Arcade.Image;
 
+    get texture() {
+        return this.player;
+    }
+
     constructor(protected input: Phaser.Input.InputPlugin) {
     }
 
     preload(load: Phaser.Loader.LoaderPlugin) {
-        load.setBaseURL(
-            'https://raw.githubusercontent.com/mariyadavydova/' +
-            'starfall-phaser3-typescript/master/');
         load.image('star', 'assets/star.png');
     }
+
 
     create(physics: ArcadePhysics) {
         this.player = physics.add.image(400, 300, 'block');

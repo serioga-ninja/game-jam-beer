@@ -9,7 +9,7 @@ const config: GameConfig = {
     width: 800,
     height: 600,
     parent: 'game',
-    scene: [new WelcomeScene(), new GameScene(), new ScoreScene()],
+    scene: [new GameScene(), new ScoreScene()],
     physics: {
         default: 'arcade',
         arcade: {

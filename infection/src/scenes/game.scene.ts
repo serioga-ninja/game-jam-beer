@@ -3,7 +3,9 @@ import {UserModel} from '../models/user.model';
 
 export class GameScene extends Phaser.Scene {
 
-    userModel: UserModel;
+    private userModel: UserModel;
+    private left: Phaser.Physics.Arcade.StaticGroup;
+    private right: Phaser.Physics.Arcade.StaticGroup;
 
     constructor() {
         super({
@@ -25,6 +27,7 @@ export class GameScene extends Phaser.Scene {
      */
     preload(): void {
         this.userModel.preload(this.load);
+        this.load.image('border', '/assets/border.png');
     }
 
     /**
@@ -33,6 +36,32 @@ export class GameScene extends Phaser.Scene {
      */
     create(): void {
         this.userModel.create(this.physics);
+
+        //#region Borders
+        this.left = this.physics.add.staticGroup({
+            key: 'border',
+            frameQuantity: 60
+        });
+
+        this.right = this.physics.add.staticGroup({
+            key: 'border',
+            frameQuantity: 60
+        });
+
+        Phaser.Actions.PlaceOnLine(
+            this.left.getChildren(),
+            new Phaser.Geom.Line(100, 0, 100, 600)
+        );
+
+        Phaser.Actions.PlaceOnLine(
+            this.right.getChildren(),
+            new Phaser.Geom.Line(500, 0, 500, 600)
+        );
+
+        this.left.refresh();
+        this.right.refresh();
+
+        //#endregion
     }
 
     /**
@@ -40,5 +69,8 @@ export class GameScene extends Phaser.Scene {
      */
     update(time: number): void {
         this.userModel.update(time);
+
+        this.physics.add.collider(this.userModel.texture, this.left);
+        this.physics.add.collider(this.userModel.texture, this.right);
     }
 }
