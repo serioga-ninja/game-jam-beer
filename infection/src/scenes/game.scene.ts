@@ -1,4 +1,5 @@
 import 'phaser';
+import {EnemyModel} from '../models/enemy.model';
 import {UserModel} from '../models/user.model';
 
 export class GameScene extends Phaser.Scene {
@@ -7,10 +8,14 @@ export class GameScene extends Phaser.Scene {
     private left: Phaser.Physics.Arcade.StaticGroup;
     private right: Phaser.Physics.Arcade.StaticGroup;
 
+    private enemies: EnemyModel[];
+
     constructor() {
         super({
             key: 'GameScene'
         });
+
+        this.enemies = [];
     }
 
     /**
@@ -19,6 +24,7 @@ export class GameScene extends Phaser.Scene {
      */
     init(params: any): void {
         this.userModel = new UserModel(this.input);
+        this.enemies.push(new EnemyModel(this.input));
     }
 
     /**
@@ -27,15 +33,24 @@ export class GameScene extends Phaser.Scene {
      */
     preload(): void {
         this.userModel.preload(this.load);
+
+        for (const enemy of this.enemies) {
+            enemy.preload(this.load);
+        }
+
         this.load.image('border', '/assets/border.png');
     }
 
     /**
-     * is called when the assets are loaded and usually contains creation of the main game objects (background, player,
+     * is called when the assets are loaded and usually contains creation of the main game objects (background, enemy,
      * obstacles, enemies, etc.)
      */
     create(): void {
         this.userModel.create(this.physics);
+
+        for (const enemy of this.enemies) {
+            enemy.create(this.physics);
+        }
 
         //#region Borders
         this.left = this.physics.add.staticGroup({

@@ -41,7 +41,7 @@ export class GameScene extends Phaser.Scene {
     }
 
     /**
-     * is called when the assets are loaded and usually contains creation of the main game objects (background, player,
+     * is called when the assets are loaded and usually contains creation of the main game objects (background, enemy,
      * obstacles, enemies, etc.)
      */
     create(): void {
