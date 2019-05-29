@@ -1,43 +1,54 @@
 import Key = Phaser.Input.Keyboard.Key;
 import ArcadePhysics = Phaser.Physics.Arcade.ArcadePhysics;
 
-export class UserModel {
+export class UserModel extends Phaser.GameObjects.Sprite {
+
+    public static get imageKey(): string {
+        return 'user';
+    }
+
+    public static get url(): string {
+        return 'assets/user.png';
+    }
 
     protected cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     protected keySpace: Phaser.Input.Keyboard.Key;
-    protected player: Phaser.Physics.Arcade.Image;
 
-    get texture() {
-        return this.player;
+    constructor(protected inputPlugin: Phaser.Input.InputPlugin, protected scene: Phaser.Scene) {
+        super(scene, 300, 500, 'user');
+
+        scene.add.existing(this);
+        this.scene.physics.world.enableBody(this, 0);
+
+        this.cursors = this.inputPlugin.keyboard.createCursorKeys();
+        this.keySpace = this.inputPlugin.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
     }
 
-    constructor(protected input: Phaser.Input.InputPlugin) {
+    preload() {
+
     }
 
-    preload(load: Phaser.Loader.LoaderPlugin) {
-        load.image('star', 'assets/star.png');
-    }
+    create() {
+        debugger;
 
-
-    create(physics: ArcadePhysics) {
-        this.player = physics.add.image(400, 300, 'block');
-        this.cursors = this.input.keyboard.createCursorKeys();
-        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
 
     update(time: number): void {
-        this.player.setVelocity(0);
+        // this.setVelocity(0);
+        this.body.velocity.y = 0;
 
         if ((this.cursors.left || {} as Key).isDown) {
-            this.player.setVelocityX(-300);
+            // this.setVelocityX(-300);
+            this.body.velocity.x += 100;
         } else if ((this.cursors.right || {} as Key).isDown) {
-            this.player.setVelocityX(300);
+            // this.setVelocityX(300);
         }
 
         if ((this.cursors.up || {} as Key).isDown) {
-            this.player.setVelocityY(-300);
+            // this.setVelocityY(-300);
         } else if ((this.cursors.down || {} as Key).isDown) {
-            this.player.setVelocityY(300);
+            // this.setVelocityY(300);
         }
 
         if (this.keySpace.isDown) {
@@ -46,6 +57,9 @@ export class UserModel {
     }
 
     fire() {
-        console.log('fire');
+        // this.setPosition(x, y - 50);
+        //
+        // this.setActive(true);
+        // this.setVisible(true);
     }
 }

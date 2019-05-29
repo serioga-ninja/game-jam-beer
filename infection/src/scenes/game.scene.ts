@@ -23,8 +23,6 @@ export class GameScene extends Phaser.Scene {
      * by calling scene.start(key, [params])
      */
     init(params: any): void {
-        this.userModel = new UserModel(this.input);
-        this.enemies.push(new EnemyModel(this.input));
     }
 
     /**
@@ -32,13 +30,13 @@ export class GameScene extends Phaser.Scene {
      * the scene is restarted, they are not reloaded
      */
     preload(): void {
-        this.userModel.preload(this.load);
+        this.load.image('border', '/assets/border.png');
+        this.load.image(UserModel.imageKey, UserModel.url);
 
         for (const enemy of this.enemies) {
             enemy.preload(this.load);
-        }
 
-        this.load.image('border', '/assets/border.png');
+        }
     }
 
     /**
@@ -46,7 +44,8 @@ export class GameScene extends Phaser.Scene {
      * obstacles, enemies, etc.)
      */
     create(): void {
-        this.userModel.create(this.physics);
+        this.userModel = new UserModel(this.input, this);
+        // this.enemies.push(new EnemyModel(this.input));
 
         for (const enemy of this.enemies) {
             enemy.create(this.physics);
@@ -76,8 +75,8 @@ export class GameScene extends Phaser.Scene {
         this.left.refresh();
         this.right.refresh();
 
-        this.physics.add.collider(this.userModel.texture, this.left);
-        this.physics.add.collider(this.userModel.texture, this.right);
+        this.physics.add.collider(this.userModel, this.left);
+        this.physics.add.collider(this.userModel, this.right);
 
         //#endregion
     }
