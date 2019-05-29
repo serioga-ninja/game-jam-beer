@@ -61,6 +61,9 @@ export class GameScene extends Phaser.Scene {
         this.left.refresh();
         this.right.refresh();
 
+        this.physics.add.collider(this.userModel.texture, this.left);
+        this.physics.add.collider(this.userModel.texture, this.right);
+
         //#endregion
     }
 
@@ -69,8 +72,5 @@ export class GameScene extends Phaser.Scene {
      */
     update(time: number): void {
         this.userModel.update(time);
-
-        this.physics.add.collider(this.userModel.texture, this.left);
-        this.physics.add.collider(this.userModel.texture, this.right);
     }
 }
