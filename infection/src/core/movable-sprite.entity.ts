@@ -1,6 +1,6 @@
-import {SpriteEntity} from './sprite.entity';
+import {SomethingEntity} from './something.entity';
 
-export abstract class MovableSpriteEntity extends SpriteEntity {
+export abstract class MovableSpriteEntity extends SomethingEntity {
 
     moveUp() {
         this.body.velocity.y = -this.getData('speed');
