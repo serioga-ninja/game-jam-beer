@@ -1,22 +1,18 @@
-import ArcadePhysics = Phaser.Physics.Arcade.ArcadePhysics;
+import {SpriteEntity} from '../../../core/entity/sprite.entity';
 
-export class EnemyModel {
-    protected enemy: Phaser.Physics.Arcade.Image;
+export class EnemyModel extends SpriteEntity {
 
-    get texture() {
-        return this.enemy;
+    public static get imageKey(): string {
+        return 'enemy-cell';
     }
 
-    constructor(protected input: Phaser.Input.InputPlugin) {
+    public static get url(): string {
+        return 'assets/enemy-cell.png';
     }
 
-    preload(load: Phaser.Loader.LoaderPlugin) {
-        load.image('enemy-cell', 'assets/enemy-cell.png');
-    }
+    constructor(protected scene: Phaser.Scene, x: number, y: number) {
+        super(scene, x, y, EnemyModel.imageKey);
 
-    create(physics: ArcadePhysics) {
-        this.enemy = physics.add
-            .image(400, 20, 'enemy-cell')
-            .setVelocityY(100);
+        this.body.velocity.y = 100;
     }
 }

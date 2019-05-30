@@ -32,11 +32,7 @@ export class GameScene extends Phaser.Scene {
     preload(): void {
         this.load.image('border', '/assets/border.png');
         this.load.image(UserModel.imageKey, UserModel.url);
-
-        for (const enemy of this.enemies) {
-            enemy.preload(this.load);
-
-        }
+        this.load.image(EnemyModel.imageKey, EnemyModel.url);
     }
 
     /**
@@ -44,12 +40,8 @@ export class GameScene extends Phaser.Scene {
      * obstacles, enemies, etc.)
      */
     create(): void {
-        this.userModel = new UserModel(this.input, this);
-        // this.enemies.push(new EnemyModel(this.input));
-
-        for (const enemy of this.enemies) {
-            enemy.create(this.physics);
-        }
+        this.userModel = new UserModel(this, 300, 300);
+        this.enemies.push(new EnemyModel(this, 300, 10));
 
         //#region Borders
         this.left = this.physics.add.staticGroup({

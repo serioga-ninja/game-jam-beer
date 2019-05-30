@@ -1,7 +1,7 @@
 import Key = Phaser.Input.Keyboard.Key;
-import ArcadePhysics = Phaser.Physics.Arcade.ArcadePhysics;
+import {MovableSpriteEntity} from '../../../core/entity/movable-sprite.entity';
 
-export class UserModel extends Phaser.GameObjects.Sprite {
+export class UserModel extends MovableSpriteEntity {
 
     public static get imageKey(): string {
         return 'user';
@@ -14,14 +14,15 @@ export class UserModel extends Phaser.GameObjects.Sprite {
     protected cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     protected keySpace: Phaser.Input.Keyboard.Key;
 
-    constructor(protected inputPlugin: Phaser.Input.InputPlugin, protected scene: Phaser.Scene) {
-        super(scene, 300, 500, 'user');
+    constructor(protected scene: Phaser.Scene, x: number, y: number) {
+        super(scene, x, y, UserModel.imageKey);
 
         scene.add.existing(this);
         this.scene.physics.world.enableBody(this, 0);
 
-        this.cursors = this.inputPlugin.keyboard.createCursorKeys();
-        this.keySpace = this.inputPlugin.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.cursors = this.scene.input.keyboard.createCursorKeys();
+        this.keySpace = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.setData('speed', 300);
 
     }
 
@@ -35,20 +36,18 @@ export class UserModel extends Phaser.GameObjects.Sprite {
     }
 
     update(time: number): void {
-        // this.setVelocity(0);
-        this.body.velocity.y = 0;
+        super.update(time);
 
         if ((this.cursors.left || {} as Key).isDown) {
-            // this.setVelocityX(-300);
-            this.body.velocity.x += 100;
+            this.moveLeft();
         } else if ((this.cursors.right || {} as Key).isDown) {
-            // this.setVelocityX(300);
+            this.moveRight();
         }
 
         if ((this.cursors.up || {} as Key).isDown) {
-            // this.setVelocityY(-300);
+            this.moveUp();
         } else if ((this.cursors.down || {} as Key).isDown) {
-            // this.setVelocityY(300);
+            this.moveDown();
         }
 
         if (this.keySpace.isDown) {
