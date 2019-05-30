@@ -1,4 +1,5 @@
 import 'phaser';
+import {BorderEntity} from '../models/border.entity';
 import {EnemyModel} from '../models/enemy.model';
 import {UserModel} from '../models/user.model';
 
@@ -30,7 +31,7 @@ export class GameScene extends Phaser.Scene {
      * the scene is restarted, they are not reloaded
      */
     preload(): void {
-        this.load.image('border', '/assets/border.png');
+        this.load.image(BorderEntity.imageKey, BorderEntity.url);
         this.load.image(UserModel.imageKey, UserModel.url);
         this.load.image(EnemyModel.imageKey, EnemyModel.url);
     }
@@ -44,15 +45,9 @@ export class GameScene extends Phaser.Scene {
         this.enemies.push(new EnemyModel(this, 300, 10));
 
         //#region Borders
-        this.left = this.physics.add.staticGroup({
-            key: 'border',
-            frameQuantity: 60
-        });
+        this.left = new BorderEntity(this);
 
-        this.right = this.physics.add.staticGroup({
-            key: 'border',
-            frameQuantity: 60
-        });
+        this.right = new BorderEntity(this);
 
         Phaser.Actions.PlaceOnLine(
             this.left.getChildren(),

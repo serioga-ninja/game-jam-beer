@@ -14,7 +14,7 @@ export class UserModel extends MovableSpriteEntity {
     protected cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     protected keySpace: Phaser.Input.Keyboard.Key;
 
-    constructor(protected scene: Phaser.Scene, x: number, y: number) {
+    constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, UserModel.imageKey);
 
         scene.add.existing(this);
