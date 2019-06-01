@@ -99,32 +99,24 @@ export class GameScene extends Phaser.Scene {
         this.createTimers();
 
         // kill enemy if it meets the users laser
-        this.physics.add.collider(this.playerLasers, this.enemies, function (playerLaser: PlayerLaserEntity, enemy: EnemyEntity) {
-            if (enemy) {
-                if (enemy.onDestroy !== undefined) {
-                    enemy.onDestroy();
-                }
-
-                enemy.explode(true);
-                playerLaser.destroy();
-                enemy.destroy();
-            }
+        this.physics.add.overlap(this.playerLasers, this.enemies, (playerLaser: PlayerLaserEntity, enemy: EnemyEntity) => {
+            this.player.onEnemyDead(enemy);
+            enemy.receiveBullet(playerLaser);
+            playerLaser.destroy();
         });
 
         // kill user and enemy if they meets
         this.physics.add.overlap(this.player, this.enemies, function (player: PlayerEntity, enemy: EnemyEntity) {
             if (!player.getData(vocabulary.IS_DEAD) && !enemy.getData(vocabulary.IS_DEAD)) {
-                player.explode(false);
-                enemy.explode(true);
+                player.explode();
+                enemy.explode();
             }
         });
 
         // on laser and player hit
         this.physics.add.overlap(this.player, this.enemyLasers, function (player: PlayerEntity, laser: EnemyLaserEntity) {
-            if (!player.getData(vocabulary.IS_DEAD) && !laser.getData(vocabulary.IS_DEAD)) {
-                player.explode(false);
-                laser.destroy();
-            }
+            player.receiveBullet(laser);
+            laser.destroy();
         });
 
         // destroy enemies bullets and enemies in the end
@@ -133,16 +125,11 @@ export class GameScene extends Phaser.Scene {
         this.physics.add.overlap(this.enemyLasers, this.endOfThePath, (laser: EnemyLaserEntity) => {
             if (!laser.getData(vocabulary.IS_DEAD)) {
                 laser.destroy();
-                this.enemyLasers.remove(laser);
             }
         });
 
         this.physics.add.overlap(this.enemies, this.endOfThePath, (enemy: EnemyEntity) => {
-            if (!enemy.getData(vocabulary.IS_DEAD)) {
-                enemy.onDestroy();
-                enemy.destroy();
-                this.enemies.remove(enemy);
-            }
+            enemy.explode();
         });
     }
 

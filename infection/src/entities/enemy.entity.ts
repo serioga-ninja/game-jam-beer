@@ -1,3 +1,4 @@
+import vocabulary from '../../../core/vocabulary';
 import {SomethingEntity} from '../core/something.entity';
 import {GameScene} from '../scenes/game.scene';
 import {EnemyLaserEntity} from './enemy-laser.entity';
@@ -24,6 +25,8 @@ export class EnemyEntity extends SomethingEntity {
         super(scene, x, y, `virus-${Phaser.Math.Between(1, 4)}`);
 
         this.body.velocity.y = Phaser.Math.Between(50, 100);
+        this.body.setImmovable(true);
+        this.setData(vocabulary.VALUE, this.body.velocity.y);
 
         this.shootTimer = this.scene.time.addEvent({
             delay: 2000,
@@ -34,6 +37,7 @@ export class EnemyEntity extends SomethingEntity {
                     this.y
                 );
                 laser.setScale(this.scaleX);
+                laser.setData(vocabulary.DAMAGE, this.getData(vocabulary.DAMAGE));
                 this.scene.enemyLasers.add(laser);
             },
             callbackScope: this,
