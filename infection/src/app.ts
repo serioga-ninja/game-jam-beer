@@ -1,19 +1,20 @@
 import 'phaser';
+import gameConfig from './core/game.config';
 import {GameScene} from './scenes/game.scene';
 import {ScoreScene} from './scenes/score.scene';
 import {WelcomeScene} from './scenes/welcome.scene';
 import GameConfig = Phaser.Types.Core.GameConfig;
 
 const config: GameConfig = {
-    title: 'Starfall',
-    width: 800,
-    height: 600,
+    title: 'Infection',
+    width: gameConfig.width,
+    height: 700,
     parent: 'game',
     scene: [new GameScene(), new ScoreScene()],
     physics: {
         default: 'arcade',
         arcade: {
-            debug: false
+            debug: true
         }
     },
     backgroundColor: '#000033'
@@ -27,4 +28,5 @@ export class InfectionGame extends Phaser.Game {
 
 window.onload = () => {
     const game = new InfectionGame(config);
+    document.getElementById('game').focus();
 };

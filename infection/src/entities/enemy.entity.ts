@@ -4,12 +4,20 @@ import {EnemyLaserEntity} from './enemy-laser.entity';
 
 export class EnemyEntity extends SomethingEntity {
 
+    public static get width() {
+        return 20;
+    }
+
+    public static get height() {
+        return 20;
+    }
+
     public static get imageKey(): string {
-        return 'enemy-cell';
+        return 'virus-1';
     }
 
     public static get url(): string {
-        return 'assets/enemy-cell.png';
+        return 'assets/virus-1.svg';
     }
 
     constructor(protected scene: GameScene, x: number, y: number) {
@@ -18,7 +26,7 @@ export class EnemyEntity extends SomethingEntity {
         this.body.velocity.y = Phaser.Math.Between(50, 100);
 
         this.shootTimer = this.scene.time.addEvent({
-            delay: 1000,
+            delay: 2000,
             callback: () => {
                 const laser = new EnemyLaserEntity(
                     this.scene,
@@ -31,6 +39,8 @@ export class EnemyEntity extends SomethingEntity {
             callbackScope: this,
             loop: true
         });
+
+        this.setDisplaySize(50, 50);
     }
 
     onDestroy() {

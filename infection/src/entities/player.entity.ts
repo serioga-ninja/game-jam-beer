@@ -11,7 +11,7 @@ export class PlayerEntity extends MovableSpriteEntity {
     }
 
     public static get url(): string {
-        return 'assets/user.png';
+        return 'assets/proto_proto.svg';
     }
 
     protected cursors: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -33,6 +33,7 @@ export class PlayerEntity extends MovableSpriteEntity {
         this.setData(vocabulary.TIMER_SHOOT_DELAY, 10);
         this.setData(vocabulary.TIMER_SHOOT_TICK, this.getData(vocabulary.TIMER_SHOOT_DELAY) - 1);
 
+        this.setDisplaySize(40, 40);
     }
 
     preload() {

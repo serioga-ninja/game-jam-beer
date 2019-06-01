@@ -1,6 +1,9 @@
 import 'phaser';
 import vocabulary from '../../../core/vocabulary';
+import gameConfig from '../core/game.config';
+import {BackgroundEntity} from '../entities/background.entity';
 import {BorderEntity} from '../entities/border.entity';
+import {EndOfThePath} from '../entities/end-of-the-path';
 import {EnemyLaserEntity} from '../entities/enemy-laser.entity';
 import {EnemyEntity} from '../entities/enemy.entity';
 import {PlayerLaserEntity} from '../entities/player-laser.entity';
@@ -10,11 +13,14 @@ import {GameSceneProperties} from '../properties/game-scene.properties';
 
 export class GameScene extends Phaser.Scene {
 
-    private left: Phaser.Physics.Arcade.StaticGroup;
-    private right: Phaser.Physics.Arcade.StaticGroup;
+    private left: BorderEntity;
+    private right: BorderEntity;
 
     private player: PlayerEntity;
+    private background: BackgroundEntity;
     private enemies: Phaser.GameObjects.Group;
+    private endOfThePath: EndOfThePath;
+
     public enemyLasers: Phaser.GameObjects.Group;
     public playerLasers: Phaser.GameObjects.Group;
 
@@ -28,22 +34,9 @@ export class GameScene extends Phaser.Scene {
      * Creates the border for the scene that doesn't allow user to
      */
     private createBorders() {
-        this.left = new BorderEntity(this);
+        this.left =  new BorderEntity(this, GameSceneProperties.borderLeftPosition, 0, true);
 
-        this.right = new BorderEntity(this);
-
-        Phaser.Actions.PlaceOnLine(
-            this.left.getChildren(),
-            new Phaser.Geom.Line(GameSceneProperties.borderLeftPosition, 0, 100, 600)
-        );
-
-        Phaser.Actions.PlaceOnLine(
-            this.right.getChildren(),
-            new Phaser.Geom.Line(GameSceneProperties.borderRightPosition, 0, 500, 600)
-        );
-
-        this.left.refresh();
-        this.right.refresh();
+        this.right = new BorderEntity(this, GameSceneProperties.borderRightPosition, 0);
 
         this.physics.add.collider(this.player, this.left);
         this.physics.add.collider(this.player, this.right);
@@ -51,11 +44,11 @@ export class GameScene extends Phaser.Scene {
 
     private createTimers() {
         this.time.addEvent({
-            delay: 1000,
+            delay: 2000,
             callback: () => {
                 const enemy = new EnemyEntity(
                     this,
-                    Phaser.Math.Between(GameSceneProperties.borderLeftPosition, GameSceneProperties.borderRightPosition),
+                    Phaser.Math.Between(BorderEntity.width, gameConfig.width - BorderEntity.width),
                     0
                 );
 
@@ -81,7 +74,13 @@ export class GameScene extends Phaser.Scene {
         this.load.image(BorderEntity.imageKey, BorderEntity.url);
         this.load.image(PlayerEntity.imageKey, PlayerEntity.url);
         this.load.image(EnemyEntity.imageKey, EnemyEntity.url);
+        this.load.image(EnemyLaserEntity.imageKey, EnemyLaserEntity.url);
         this.load.image(PlayerLaserEntity.imageKey, PlayerLaserEntity.url);
+        this.load.image(BackgroundEntity.imageKey, BackgroundEntity.url);
+        this.load.image('virus-1', 'assets/virus-1.svg');
+        this.load.image('virus-2', 'assets/virus-2.svg');
+        this.load.image('virus-3', 'assets/virus-3.svg');
+        this.load.image('virus-4', 'assets/virus-4.svg');
     }
 
     /**
@@ -89,10 +88,12 @@ export class GameScene extends Phaser.Scene {
      * obstacles, enemies, etc.)
      */
     create(): void {
+        this.background = new BackgroundEntity(this);
         this.player = new PlayerEntity(this, GameSceneProperties.userStartPosition.x, GameSceneProperties.userStartPosition.y);
         this.enemies = this.add.group();
         this.enemyLasers = this.add.group();
         this.playerLasers = this.add.group();
+        this.endOfThePath = new EndOfThePath(this);
 
         this.createBorders();
         this.createTimers();
@@ -122,6 +123,24 @@ export class GameScene extends Phaser.Scene {
             if (!player.getData(vocabulary.IS_DEAD) && !laser.getData(vocabulary.IS_DEAD)) {
                 player.explode(false);
                 laser.destroy();
+            }
+        });
+
+        // destroy enemies bullets and enemies in the end
+        this.physics.add.collider(this.player, this.endOfThePath);
+
+        this.physics.add.overlap(this.enemyLasers, this.endOfThePath, (laser: EnemyLaserEntity) => {
+            if (!laser.getData(vocabulary.IS_DEAD)) {
+                laser.destroy();
+                this.enemyLasers.remove(laser);
+            }
+        });
+
+        this.physics.add.overlap(this.enemies, this.endOfThePath, (enemy: EnemyEntity) => {
+            if (!enemy.getData(vocabulary.IS_DEAD)) {
+                enemy.onDestroy();
+                enemy.destroy();
+                this.enemies.remove(enemy);
             }
         });
     }

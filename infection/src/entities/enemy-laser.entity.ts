@@ -6,12 +6,14 @@ export class EnemyLaserEntity extends SpriteEntity {
     }
 
     public static get url(): string {
-        return 'assets/enemy-bullet.png';
+        return 'assets/bullet.svg';
     }
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, EnemyLaserEntity.imageKey);
 
         this.body.velocity.y = 200;
+        this.setDisplaySize(30, 60);
+        this.setFlipY(true);
     }
 }
