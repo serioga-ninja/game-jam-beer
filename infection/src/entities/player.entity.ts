@@ -48,20 +48,6 @@ export class PlayerEntity extends MovableSpriteEntity {
     update(time: number): void {
         super.update(time);
 
-        //#region Movement
-        if ((this.cursors.left || {} as Key).isDown) {
-            this.moveLeft();
-        } else if ((this.cursors.right || {} as Key).isDown) {
-            this.moveRight();
-        }
-
-        if ((this.cursors.up || {} as Key).isDown) {
-            this.moveUp();
-        } else if ((this.cursors.down || {} as Key).isDown) {
-            this.moveDown();
-        }
-        //#endregion
-
         if (this.getData(vocabulary.IS_SHOOTING)) {
             if (this.getData(vocabulary.TIMER_SHOOT_TICK) < this.getData(vocabulary.TIMER_SHOOT_DELAY)) {
                 this.setData(vocabulary.TIMER_SHOOT_TICK, this.getData(vocabulary.TIMER_SHOOT_TICK) + 1); // every game update, increase timerShootTick by one until we reach the value of timerShootDelay
@@ -73,16 +59,5 @@ export class PlayerEntity extends MovableSpriteEntity {
                 this.setData(vocabulary.TIMER_SHOOT_TICK, 0);
             }
         }
-
-        if (this.keySpace.isDown) {
-            this.fire();
-        }
-    }
-
-    fire() {
-        // this.setPosition(x, y - 50);
-        //
-        // this.setActive(true);
-        // this.setVisible(true);
     }
 }

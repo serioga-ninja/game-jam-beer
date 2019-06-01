@@ -34,7 +34,7 @@ export class GameScene extends Phaser.Scene {
      * Creates the border for the scene that doesn't allow user to
      */
     private createBorders() {
-        this.left =  new BorderEntity(this, GameSceneProperties.borderLeftPosition, 0, true);
+        this.left = new BorderEntity(this, GameSceneProperties.borderLeftPosition, 0, true);
 
         this.right = new BorderEntity(this, GameSceneProperties.borderRightPosition, 0);
 
@@ -48,7 +48,7 @@ export class GameScene extends Phaser.Scene {
             callback: () => {
                 const enemy = new EnemyEntity(
                     this,
-                    Phaser.Math.Between(BorderEntity.width, gameConfig.width - BorderEntity.width),
+                    Phaser.Math.Between(BorderEntity.width + 50, gameConfig.width - BorderEntity.width),
                     0
                 );
 
@@ -107,6 +107,7 @@ export class GameScene extends Phaser.Scene {
 
                 enemy.explode(true);
                 playerLaser.destroy();
+                enemy.destroy();
             }
         });
 

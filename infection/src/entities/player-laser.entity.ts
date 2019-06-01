@@ -1,17 +1,19 @@
-import {SpriteEntity} from '../../../core/entity/sprite.entity';
+import {EnemyLaserEntity} from './enemy-laser.entity';
 
-export class PlayerLaserEntity extends SpriteEntity {
+export class PlayerLaserEntity extends EnemyLaserEntity {
     public static get imageKey(): string {
-        return 'player-bullet';
+        return 'enemy-bullet';
     }
 
     public static get url(): string {
-        return 'assets/player-bullet.png';
+        return 'assets/bullet.svg';
     }
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
-        super(scene, x, y, PlayerLaserEntity.imageKey);
+        super(scene, x, y,);
 
-        this.body.velocity.y = 200;
+        this.body.velocity.y = -200;
+        this.setDisplaySize(15, 30);
+        this.setFlipY(false);
     }
 }

@@ -8,7 +8,7 @@ export abstract class SomethingEntity extends SpriteEntity {
     explode(canDestroy: boolean) {
         if (!this.getData(vocabulary.IS_DEAD)) {
             // Set the texture to the explosion image, then play the animation
-            this.setTexture('sprExplosion');  // this refers to the same animation key we used when we added this.anims.create previously
+            // this.setTexture('sprExplosion');  // this refers to the same animation key we used when we added this.anims.create previously
 
             // this.play('sprExplosion'); // play the animation
             // pick a random explosion sound within the array we defined in this.sfx in SceneMain
@@ -19,7 +19,7 @@ export abstract class SomethingEntity extends SpriteEntity {
                     this.shootTimer.remove(false);
                 }
             }
-            this.setAngle(0);
+            // this.setAngle(0);
             this.body.setVelocity(0, 0);
             this.on('animationcomplete', function () {
                 if (canDestroy) {

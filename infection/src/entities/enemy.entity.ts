@@ -21,7 +21,7 @@ export class EnemyEntity extends SomethingEntity {
     }
 
     constructor(protected scene: GameScene, x: number, y: number) {
-        super(scene, x, y, EnemyEntity.imageKey);
+        super(scene, x, y, `virus-${Phaser.Math.Between(1, 4)}`);
 
         this.body.velocity.y = Phaser.Math.Between(50, 100);
 
