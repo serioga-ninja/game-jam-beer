@@ -28,10 +28,10 @@ export class PlayerEntity extends MovableSpriteEntity {
 
         this.cursors = this.scene.input.keyboard.createCursorKeys();
         this.keySpace = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        this.setData(vocabulary.SPEED, 300);
+        this.setData(vocabulary.SPEED, 200);
 
         this.setData(vocabulary.IS_SHOOTING, false);
-        this.setData(vocabulary.TIMER_SHOOT_DELAY, 10);
+        this.setData(vocabulary.TIMER_SHOOT_DELAY, 30);
         this.setData(vocabulary.TIMER_SHOOT_TICK, this.getData(vocabulary.TIMER_SHOOT_DELAY) - 1);
         this.setData(vocabulary.DAMAGE, 50);
         this.setData(vocabulary.POINTS, 0);
@@ -68,6 +68,5 @@ export class PlayerEntity extends MovableSpriteEntity {
 
     onEnemyDead(enemy: EnemyEntity) {
         this.setData(vocabulary.POINTS, this.getData(vocabulary.POINTS) + enemy.getData(vocabulary.VALUE));
-        console.log(this.getData(vocabulary.POINTS));
     }
 }

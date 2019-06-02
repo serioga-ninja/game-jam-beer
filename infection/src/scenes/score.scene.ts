@@ -1,18 +1,23 @@
 import 'phaser';
 
 export class ScoreScene extends Phaser.Scene {
+
+    public static get key() {
+        return 'ScoreScene';
+    }
+
     score: number;
     result: Phaser.GameObjects.Text;
     hint: Phaser.GameObjects.Text;
 
     constructor() {
         super({
-            key: 'ScoreScene'
+            key: ScoreScene.key
         });
     }
 
     init(params: any): void {
-        this.score = params.starsCaught;
+        this.score = params.points;
     }
 
     create(): void {

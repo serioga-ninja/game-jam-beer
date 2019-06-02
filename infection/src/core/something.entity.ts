@@ -33,17 +33,20 @@ export abstract class SomethingEntity extends SpriteEntity {
         this.setAngle(0);
         this.body.setVelocity(0, 0);
 
-        this.destroy();
         this.setData(vocabulary.IS_DEAD, true);
     }
 
-    receiveBullet(bullet: PlayerLaserEntity | EnemyLaserEntity) {
+    receiveBullet(bullet: PlayerLaserEntity | EnemyLaserEntity): boolean {
         let currentHealth: number = this.getData(vocabulary.HEALTH);
         currentHealth -= bullet.getData(vocabulary.DAMAGE) as number;
         this.setData(vocabulary.HEALTH, currentHealth);
 
         if (currentHealth <= 0 && !this.getData(vocabulary.IS_DEAD)) {
             this.explode();
+
+            return true;
         }
+
+        return  false;
     }
 }

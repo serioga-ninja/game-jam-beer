@@ -7,8 +7,10 @@ import {EndOfThePath} from '../entities/end-of-the-path';
 import {EnemyLaserEntity} from '../entities/enemy-laser.entity';
 import {EnemyEntity} from '../entities/enemy.entity';
 import {PlayerLaserEntity} from '../entities/player-laser.entity';
+import {PlayerStatsEntity} from '../entities/player-stats.entity';
 import {PlayerEntity} from '../entities/player.entity';
 import {GameSceneProperties} from '../properties/game-scene.properties';
+import {ScoreScene} from './score.scene';
 
 
 export class GameScene extends Phaser.Scene {
@@ -20,6 +22,7 @@ export class GameScene extends Phaser.Scene {
     private background: BackgroundEntity;
     private enemies: Phaser.GameObjects.Group;
     private endOfThePath: EndOfThePath;
+    private playerStats: PlayerStatsEntity;
 
     public enemyLasers: Phaser.GameObjects.Group;
     public playerLasers: Phaser.GameObjects.Group;
@@ -94,22 +97,29 @@ export class GameScene extends Phaser.Scene {
         this.enemyLasers = this.add.group();
         this.playerLasers = this.add.group();
         this.endOfThePath = new EndOfThePath(this);
+        this.playerStats = new PlayerStatsEntity(this, this.player);
 
         this.createBorders();
         this.createTimers();
 
         // kill enemy if it meets the users laser
         this.physics.add.overlap(this.playerLasers, this.enemies, (playerLaser: PlayerLaserEntity, enemy: EnemyEntity) => {
-            this.player.onEnemyDead(enemy);
-            enemy.receiveBullet(playerLaser);
+            if (enemy.receiveBullet(playerLaser)) {
+                this.player.onEnemyDead(enemy);
+                enemy.destroy();
+            }
             playerLaser.destroy();
         });
 
         // kill user and enemy if they meets
-        this.physics.add.overlap(this.player, this.enemies, function (player: PlayerEntity, enemy: EnemyEntity) {
+        this.physics.add.overlap(this.player, this.enemies, (player: PlayerEntity, enemy: EnemyEntity) => {
             if (!player.getData(vocabulary.IS_DEAD) && !enemy.getData(vocabulary.IS_DEAD)) {
                 player.explode();
                 enemy.explode();
+                enemy.destroy();
+                this.scene.start(ScoreScene.key, {
+                    points: player.getData(vocabulary.POINTS)
+                });
             }
         });
 
@@ -129,7 +139,9 @@ export class GameScene extends Phaser.Scene {
         });
 
         this.physics.add.overlap(this.enemies, this.endOfThePath, (enemy: EnemyEntity) => {
+            this.player.setData(vocabulary.POINTS, this.player.getData(vocabulary.POINTS) - enemy.getData(vocabulary.VALUE));
             enemy.explode();
+            enemy.destroy();
         });
     }
 
@@ -143,5 +155,7 @@ export class GameScene extends Phaser.Scene {
             this.player.setData(vocabulary.TIMER_SHOOT_TICK, this.player.getData(vocabulary.TIMER_SHOOT_DELAY) - 1);
             this.player.setData(vocabulary.IS_SHOOTING, false);
         }
+
+        this.playerStats.preUpdate(time);
     }
 }

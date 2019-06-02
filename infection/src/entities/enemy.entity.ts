@@ -26,7 +26,14 @@ export class EnemyEntity extends SomethingEntity {
 
         this.body.velocity.y = Phaser.Math.Between(50, 100);
         this.body.setImmovable(true);
-        this.setData(vocabulary.VALUE, this.body.velocity.y);
+
+        this.setData(vocabulary.DAMAGE, Phaser.Math.Between(10, 30));
+        this.setData(vocabulary.HEALTH, Phaser.Math.Between(50, 200));
+        this.setData(vocabulary.VALUE,
+            this.body.velocity.y / 2
+            + this.getData(vocabulary.DAMAGE) * 2
+            + this.getData(vocabulary.HEALTH)
+        );
 
         this.shootTimer = this.scene.time.addEvent({
             delay: 2000,
@@ -44,7 +51,7 @@ export class EnemyEntity extends SomethingEntity {
             loop: true
         });
 
-        this.setDisplaySize(50, 50);
+        this.setDisplaySize(this.getData(vocabulary.HEALTH) / 2, this.getData(vocabulary.HEALTH) / 2);
     }
 
     onDestroy() {
