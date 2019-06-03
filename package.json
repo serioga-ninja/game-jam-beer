@@ -2,7 +2,7 @@
   "name": "game-jam-beer",
   "version": "0.0.0",
   "scripts": {
-    "prestart": "tsc && parcel build infection/index.html --public-url /infection",
+    "prestart": "node_modules/.bin/tsc && parcel build infection/index.html --public-url /infection",
     "start": "node dist/app.js"
   },
   "dependencies": {
