@@ -5,16 +5,29 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "strictNullChecks": true,
+    "strictNullChecks": false,
     "target": "es2015",
     "alwaysStrict": true,
     "lib": [
       "es2018",
-      "dom"
+      "dom",
+      "es5",
+      "es2015",
+      "es2016",
+      "esnext.asynciterable",
+      "scripthost"
+    ],
+    "outDir": "./dist",
+    "typeRoots": [
+      "node_modules/@types"
     ]
   },
-  "exclude": [
-    "node_modules"
+  "compileOnSave": false,
+  "include": [
+    "app.ts",
+    "infection/**/*"
   ],
-  "compileOnSave": false
+  "exclude": [
+    "./node_modules/**/*"
+  ]
 }

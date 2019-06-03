@@ -74,6 +74,7 @@ export class GameScene extends Phaser.Scene {
      * the scene is restarted, they are not reloaded
      */
     preload(): void {
+        this.load.setBaseURL('/infection');
         this.load.image(BorderEntity.imageKey, BorderEntity.url);
         this.load.image(PlayerEntity.imageKey, PlayerEntity.url);
         this.load.image(EnemyEntity.imageKey, EnemyEntity.url);
